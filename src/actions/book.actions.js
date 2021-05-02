@@ -14,6 +14,9 @@ import {
 }
 from './types';
 import { books } from '../data';
+import axios from 'axios';
+
+const url = ''
 
 export const fetchBooksSuccess = (data) =>{
     return{
@@ -22,8 +25,39 @@ export const fetchBooksSuccess = (data) =>{
     }
 }
 
+export const fetchBooksLoading = (data) =>{
+    return{
+        type: FETCH_BOOK_LOADING,
+        payload: data,
+    }
+}
+
+const normalizeData = (data) => {
+    const arr = data.map(item=>{
+        const keys = Object.keys(item);
+
+        keys.forEach(k=>{
+            item[k.toLowerCase()] = item[k];
+            delete item[k];
+        })
+        return item;
+    })
+    return arr;
+}
+
 export const fetchBooks = () =>{
+    let isLoading = true;
+
     return (dispatch) => {
-        dispatch(fetchBooksSuccess(books))
+        dispatch(fetchBooksLoading(isLoading));
+        return axios.get(url)
+        .then(response => {
+            const data = normalizeData(response.data);
+            dispatch(fetchBooksSuccess(data));
+            isLoading = false;
+        }).catch(error =>{
+            console.log(error);
+            isLoading = false;
+        })
     }
 }
