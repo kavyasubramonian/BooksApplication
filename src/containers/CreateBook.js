@@ -25,6 +25,15 @@ class CreateBook extends Component{
         })
     }
 
+    handleReset(){
+        e.preventDefault();
+        this.setState({
+            title: '',
+            author: '',
+            year: '',
+        });
+    }
+
     render(){
         return(
             <div className="create-book">
@@ -34,6 +43,7 @@ class CreateBook extends Component{
                             type="text"
                             className="form-control"
                             name="title"
+                            value={this.state.title}
                             placeholder="Enter Title"
                             onChange={this.handleOnValueChange.bind(this)}
                         />
@@ -43,6 +53,7 @@ class CreateBook extends Component{
                             type="text"
                             className="form-control"
                             name="author"
+                            value={this.state.author}
                             placeholder="Enter Author"
                             onChange={this.handleOnValueChange.bind(this)}
                         />
@@ -52,6 +63,7 @@ class CreateBook extends Component{
                             type="text"
                             className="form-control"
                             name="year"
+                            value={this.state.year}
                             placeholder="Enter Year Published"
                             onChange={this.handleOnValueChange.bind(this)}
                         />
@@ -60,7 +72,8 @@ class CreateBook extends Component{
                         <button type="submit" className="btn btn-primary">
                             Add
                         </button>
-                        <button type="button" className="btn btn-default">
+                        <button type="button" className="btn btn-default"
+                        onClick={this.handleReset.bind(this)}>
                             Cancel
                         </button>
                     </div>
