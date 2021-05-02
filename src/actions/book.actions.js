@@ -13,10 +13,51 @@ import {
     FETCH_BOOK_SUCCESS
 }
 from './types';
-import { books } from '../data';
 import axios from 'axios';
+import { history } from '../index';
 
 const url = ''
+
+//CREATE____________________________________________________________________________________________
+
+export const createBookSuccess = (data) =>{
+    return{
+        type: ADD_BOOK_SUCCESS,
+        payload: data,
+    }
+}
+
+export const createBook = (book) =>{
+    const data = {
+        title: book.title,
+        author: book.author,
+        year: book.year,
+    }
+    return (dispatch) =>{
+        axios.post(url,data)
+        .then(response => {
+            const id = response.data;
+            axios.get(`${url}/${id}`)
+            .then(response => {
+                const data = response.data;
+                const normalizedData={
+                    id: data.ID,
+                    title: data.Title,
+                    author: data.Author,
+                    year: data.Year,
+                }
+                dispatch(createBookSuccess(normalizedData));
+                history.push('/');
+            }).catch(error => {
+                console.log(error);
+            })
+        }).catch(error => {
+
+        })
+    }
+}
+
+//FETCH____________________________________________________________________________________________
 
 export const fetchBooksSuccess = (data) =>{
     return{
