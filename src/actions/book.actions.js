@@ -27,6 +27,13 @@ export const createBookSuccess = (data) =>{
     }
 }
 
+export const createBookError = (data) =>{
+    return{
+        type: ADD_BOOK_ERROR,
+        payload: data,
+    }
+}
+
 export const createBook = (book) =>{
     const data = {
         title: book.title,
@@ -49,10 +56,16 @@ export const createBook = (book) =>{
                 dispatch(createBookSuccess(normalizedData));
                 history.push('/');
             }).catch(error => {
-                console.log(error);
+                const errorPayload = {}
+                errorPayload['message']=error.response.data;
+                errorPayload['status']=error.response.status;
+                dispatch(createBookError(error));
             })
         }).catch(error => {
-
+            const errorPayload = {}
+            errorPayload['message']=error.response.data;
+            errorPayload['status']=error.response.status;
+            dispatch(createBookError(error));
         })
     }
 }
