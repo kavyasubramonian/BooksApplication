@@ -32,6 +32,13 @@ export const fetchBooksLoading = (data) =>{
     }
 }
 
+export const fetchBooksError = (data) =>{
+    return{
+        type: FETCH_BOOK_ERROR,
+        payload: data,
+    }
+}
+
 const normalizeData = (data) => {
     const arr = data.map(item=>{
         const keys = Object.keys(item);
@@ -55,9 +62,15 @@ export const fetchBooks = () =>{
             const data = normalizeData(response.data);
             dispatch(fetchBooksSuccess(data));
             isLoading = false;
-        }).catch(error =>{
-            console.log(error);
+            dispatch(fetchBooksLoading(isLoading));
             isLoading = false;
+        }).catch(error =>{
+            const errorPayload = {}
+            // errorPayload['message'] = error.response.data.message;
+            // errorPayload['status'] = error.response.status;
+            // dispatch(fetchBooksError(errorPayload));
+            isLoading = false;
+            dispatch(fetchBooksLoading(isLoading));
         })
     }
 }

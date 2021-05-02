@@ -26,6 +26,8 @@ const bookReducer = (state=defaultState, action) =>{
             return {...state, books: action.payload};
         case FETCH_BOOK_LOADING:
              return { ...state, isLoading: action.payload};
+        case FETCH_BOOK_ERROR:
+            return {...state, error: action.payload};
         default:
             return state;
     }
