@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import Book from '../components/Book';
 import { fetchBooks } from '../actions/book.actions';
+import { deleteBook } from '../actions/book.actions';
+import { history } from '../index';
 
 class Books extends Component{
     constructor(props){
@@ -9,6 +11,14 @@ class Books extends Component{
     }
     componentWillMount(){
         this.props.onFetch();
+    }
+    handleEdit(book){
+        history.push({
+            pathname: `/edit/${book.id}`,
+            state:{
+                book: book,
+            }
+        })
     }
     render(){
         if(this.props.isLoading){
@@ -38,7 +48,7 @@ class Books extends Component{
                             {
                                 this.props.books.map(book =>{
                                     return (
-                                        <Book key={book.id} book={book}/>
+                                        <Book key={book.id} book={book} onEdit={this.handleEdit.bind(this)} onDelete={this.props.onDelete}/>
                                     )
                                 })
                             }
@@ -62,6 +72,9 @@ const mapDispatchToProps = (dispatch) =>{
     return{
         onFetch: () =>{
             dispatch(fetchBooks());
+        },
+        onDelete: (id) =>{
+            dispatch(deleteBook(id));
         } 
     }
 }

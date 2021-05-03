@@ -10,14 +10,15 @@ class App extends Component {
   constructor(props){
     super(props);
     this.state={
-      pathname: ''
+      pathname: '',
+      book: null,
     }
     this.notifyPathname = this.notifyPathname.bind(this);
   }
 
   notifyPathname(pathname){
     this.setState({
-      pathname: pathname
+      pathname: pathname,
     });
   }
 
@@ -40,7 +41,8 @@ class App extends Component {
             />
             <Route path="/edit/:id"
                    exact
-                   component={()=><CreateBook/>}
+                   book={this.state.book}
+                   component={(props)=><CreateBook {...props}/>}
             />
           </Switch>
         </div>
